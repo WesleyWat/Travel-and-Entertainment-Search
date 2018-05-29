@@ -7,7 +7,7 @@ This is a B/S based project which help users to search places they prefer and ge
 
 It's a practical one which do help in our daily life. It's responsive-designed and can be opened by mobile devices. So it is convenient.
 
-##Technologies Used
+Technologies Used
 -
 
 Frontend is a conbination of HTML5, Bootstrap, JQuery and AngularJS.
