@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-animate.js"></script>
+
+	<script type="text/javascript">
+	var app = angular.module('myApp',['ngAnimate']);
+	app.controller('myCtrl', function($scope){
+		$scope.var = false;
+		$scope.toggle = function(){
+			$scope.var = !$scope.var;
+		}
+	})
+</script>
+<style type="text/css">
+
+.ng1{
+	width: 100%;
+	background-color: green;
+}
+
+.ng1.ng-hide {
+  opacity: 0;
+}
+
+.ng1.ng-hide-remove,
+.ng1.ng-hide-add {
+  -webkit-transition:0.5s linear all;
+  -moz-transition:0.5s linear all;
+  -o-transition:0.5s linear all;
+  transition:0.5s linear all;
+  position:absolute;
+}
+
+.ng1.ng-hide-remove{
+	left:-100%;
+}
+
+.ng1.ng-hide-remove.ng-hide-remove-active{
+	left:0;
+}
+
+.ng1.ng-hide-add{
+  left:0;
+}
+
+.ng1.ng-hide-add-active{
+  left:-100%;
+}
+
+
+.ng2{
+	width: 100%;
+	background-color: red;
+}
+
+.ng2.ng-hide {
+  opacity: 0;
+}
+
+.ng2.ng-hide-remove,
+.ng2.ng-hide-add {
+  -webkit-transition:0.5s linear all;
+  -moz-transition:0.5s linear all;
+  -o-transition:0.5s linear all;
+  transition:0.5s linear all;
+  position:absolute;
+}
+
+.ng2.ng-hide-remove{
+	left:100%;
+}
+
+.ng2.ng-hide-remove.ng-hide-remove-active{
+	left:0;
+}
+
+.ng2.ng-hide-add{
+  left:0;
+}
+
+.ng2.ng-hide-add-active{
+  left:100%;
+}
+
+</style>
+
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+
+{{var}}
+<div class="container">
+<div class="ng1" ng-hide="var">
+	test<br>
+	test<br>
+	test<br>
+</div>
+<div class="ng2" ng-hide="!var">
+	<div id="number">2222<br></div>
+	2222<br>
+	2222<br>
+</div
+
+</div>
+
+
+<button type="button" id="testButton" ng-click="toggle()">test checkbox</button>
+<button type="button" onclick="find()">find string</button>
+
+<script type="text/javascript">
+	function find(){
+
+		var str = document.getElementById("number").innerHTML;
+		alert(str);
+	}
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,1688 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,inital-scal=1.0">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVVw_icJypBn-QaAUgsyS4aO8vSNI7E8s&libraries=places"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-animate.min.js"></script>
+	<script src="animate.js"></script>
+
+
+
+<style type="text/css">
+#header{
+	text-align: center;
+	padding-top: 15px;
+	margin-bottom: 15px;
+}
+
+.redStar {
+	color: red;
+}
+
+#searchForm {
+	background-color: #f6f6f6;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#resetButton{
+	background-color: white;
+}
+
+.resultButtonSet{
+	margin-top: 20px;
+	margin-bottom: 20px
+}
+
+#detailsBtnDiv{
+	margin-bottom: 15px;
+}
+
+.stars-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+
+.stars-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+
+.yellow-star{
+	color:#f8ce0b;
+}
+
+.photo {
+	margin: 5px 0 5px 0;
+}
+
+.eachReview{
+	padding: 7px;
+	margin: 7px 0 7px 0;
+}
+
+#realMap{
+	height: 400px;
+}
+
+.errorDiv{
+	margin: 100px 0 100px 0;
+}
+
+.noRecords{
+	margin: 100px 0 100px 0;
+}
+
+.star{
+	color: #f8ce0b;
+}
+
+.ngReview.ng-hide {
+  opacity: 0;
+}
+	
+.ngReview.ng-hide-remove {
+  transition: all linear 0.5s;
+}
+
+.containContainer{
+	width: 100%;
+	position: absolute;
+}
+
+.ng1{
+	width: 100%;
+}
+
+.ng1.ng-hide {
+  opacity: 0;
+}
+
+.ng1.ng-hide-remove,
+.ng1.ng-hide-add {
+  -webkit-transition:0.5s linear all;
+  -moz-transition:0.5s linear all;
+  -o-transition:0.5s linear all;
+  transition:0.5s linear all;
+  position:relative;
+}
+
+.ng1.ng-hide-remove{
+	left:-100%;
+}
+
+.ng1.ng-hide-remove.ng-hide-remove-active{
+	left:0;
+}
+
+.ng1.ng-hide-add{
+  left:0;
+}
+
+.ng1.ng-hide-add-active{
+  left:-100%;
+}
+
+
+.ng2{
+	width: 100%;
+}
+
+.ng2.ng-hide {
+  opacity: 0;
+}
+
+.ng2.ng-hide-remove,
+.ng2.ng-hide-add {
+  -webkit-transition:0.5s linear all;
+  -moz-transition:0.5s linear all;
+  -o-transition:0.5s linear all;
+  transition:0.5s linear all;
+  position:relative;
+}
+
+.ng2.ng-hide-remove{
+	left:100%;
+}
+
+.ng2.ng-hide-remove.ng-hide-remove-active{
+	left:0;
+}
+
+.ng2.ng-hide-add{
+  left:0;
+}
+
+.ng2.ng-hide-add-active{
+  left:100%;
+}
+
+
+</style>
+</head>
+
+ 
+<body ng-app="myApp" ng-controller="myCtrl">
+	<div class="row">
+	<div class="col-lg-3 col-0"></div> 
+
+	<div class="col-lg-6 col-12">
+
+	<div id="searchForm" class="card">
+	<div class="card-body">
+	<h3 id="header">Travel and Entertainmen Search</h3>
+    <form id="form1" name="form1" onsubmit="return false" action="##" method="post">
+	   	<div class="row">
+	   	<div class="col-lg-2">
+		</div>
+	  	<div class="col-lg-2">
+	    <p>Keyword<span class="redStar">*</span></p>
+		</div>
+		<div class="col-lg-6 form-group">
+	    <input id="keyword" name="keyword" type="text" class="form-control " placeholder="" required ng-model="keywordNG">
+	    <div class="invalid-feedback">
+          Please enter a keyword.
+        </div>
+		</div>
+		<div class="col-lg-2">
+		</div>
+	  	</div>
+
+	  	<div class="row">
+	   	<div class="col-lg-2">
+		</div>
+	  	<div class="col-lg-2">
+	    <p>Category</p>
+		</div>
+		<div class="col-lg-4 form-group">
+	        <select id="type" name="type" class="form-control">
+	        <option value="default" selected="">Default</option>
+	        <option value="airport">Airport</option>
+	        <option value="amusement_park">Amusement Park</option>
+	        <option value="aquarium">Aquarium</option>
+	        <option value="art_gallery">Art Gallery</option>
+	        <option value="bakery">Bakery</option>
+	        <option value="bar">Bar</option>
+	        <option value="beauty_salon">Beauty Salon</option>
+	        <option value="bowling_alley">Bowling Alley</option>
+	        <option value="bus_station">Bus Station</option>
+	        <option value="cafe">Cage</option>
+	        <option value="campground">Campground</option>
+	        <option value="car_rental">Car Rental</option>
+	        <option value="casino">Casino</option>
+	        <option value="lodging">Lodging</option>
+	        <option value="movie_theater">Movie Theater</option>
+	        <option value="museum">Museum</option>
+	        <option value="night_club">Night Club</option>
+	        <option value="park">Park</option>
+	        <option value="parking">Parking</option>
+	        <option value="restaurant">Restaurant</option>
+	        <option value="shopping_mall">Shopping Mall</option>
+	        <option value="stadium">Stadium</option>
+	        <option value="subway_station">Subway Station</option>
+	        <option value="taxi_stand">Taxi Stand</option>
+	        <option value="train_station">Train Station</option>
+	        <option value="transit_station">Transit Station</option>
+	        <option value="travel_agency">Travey Agency</option>
+	        <option value="zoo">Zoo</option>
+	        </select>
+		</div>
+		<div class="col-lg-4">
+		</div>
+	  	</div>
+
+	  	<div class="row">
+	  	<div class="col-lg-2">
+		</div>
+	  	<div class="col-lg-2">
+	  		<p>Distance(miles)</p>
+	  	</div>
+	  	<div class="col-lg-4 form-group">
+	    <input id="distance" name="distance" type="text" class="form-control" placeholder="10" value="10">
+	  	</div>
+	  	<div class="col-lg-4">
+		</div>
+	  	</div>
+
+	  	<div class="row">
+	   	<div class="col-lg-2">
+		</div>
+	  	<div class="col-lg-2">
+	    <p>From<span class="redStar">*</span></p>
+		</div>
+		<div class="col-lg-6 form-check">
+		<div>
+		<input name="from" class="form-check-input" type="radio" value="current" onclick="setLocationD()" ng-model="selectLocation" checked>
+		<label class="form-check-label" for="exampleRadios1">
+		Current Location
+		</label>
+		</div>
+		<div>
+		<input name="from" class="form-check-input" type="radio" value="other" onclick="setLocationA()" ng-model="selectLocation">
+		<label class="form-check-label" for="exampleRadios1">
+		Other. Please specify:
+		</label>
+		</div>
+		<div>
+			<input id="location" name="location" type="text" class="form-control" disabled required ng-model="locationNG">
+			<div class="invalid-feedback">
+	        Please enter a location.
+	        </div>
+		</div>
+		</div>
+		<div class="col-lg-2">
+		</div>
+	  	</div>
+
+	  	<div class="row">
+	  	<div class="col-lg-2">
+		</div>
+		<div class="col-lg-10">
+	  	<button id="submitButton" name="submitButton" type="submit" class="btn btn-primary" onclick="submitForm()" ng-disabled="test()"><span class="fa fa-search"></span>Search</button>
+	  	<button id="resetButton" type="button" class="btn btn-default" ng-click="containFalse()" onclick="resetAll()">Clear</button>
+	  	</div>
+	  	</div>
+	</form>
+	</div>
+	</div>
+	</div>
+	<div class="col-lg-3 col-0"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-5 col-0"></div>
+		<div class="col-lg-2 col-12 d-flex justify-content-center resultButtonSet">
+			<button id="resultsBtn" type="button" class="btn btn-primary">Results</button>
+			<button id="favoritesBtn" type="button" class="btn btn-light">Favorites</button>
+		</div> 
+		<div class="col-lg-5 col-0"></div> 		
+	</div>	
+
+	<div style="overflow: hidden;">
+	<div style="position: relative;">
+	<div ng-hide="change" id="contentRow" class="row ng1" ng-controller="refresh">
+		<div class="col-lg-1 col-md-0 col-0"></div>
+		<div class="col-lg-10 col-md-12 col-12">
+		<div id="content"></div>
+		<div id="favoritesContainer" style="display: none;"></div>
+		</div>
+		<div class="col-lg-1 col-md-0 col-0"></div>
+	</div>
+
+	<div ng-hide="!change" id="detailRow" class="row ng2" >
+		<div class="col-lg-1 col-0"></div>
+		<div id="details" class="col-lg-10 col-12">
+			<div>
+				<div id="placeName" class="d-flex justify-content-center"></div>
+				<div id="twitterContainer">
+					<div class="d-flex flex-row ">
+
+					<div class="mr-auto p-2 align-self-center"> 
+					<button id="list" type="button" class="btn btn-outline-dark" ng-click="containFalse()"><span class="fas fa-angle-left"></span>List</button>
+					</div>
+					<div class="p-2">
+					<button id="favorThis" type="button" class="btn btn-outline-dark not-click"><span class="far fa-star"></span></button>
+					<a id="twitter" href="" class="btn btn-link"><img style="height:38px" src="http://cs-server.usc.edu:45678/hw/hw8/images/Twitter.png"></a>
+					</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="d-flex justify-content-end row">
+			
+			<ul class="nav nav-tabs" id="detailTab" role="tablist">
+			  <li class="nav-item">
+			    <a class="nav-link active" id="infoTab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Info</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" id="photosTab" data-toggle="tab" href="#photos" role="tab" aria-controls="photos" aria-selected="false" onclick="photoLoad()">Photos</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" id="mapTab" data-toggle="tab" href="#map" role="tab" aria-controls="map" aria-selected="false" onclick="initMap()">Map</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" id="reviewTab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Review</a>
+			  </li>
+			</ul>
+		    </div>
+			<div class="tab-content" id="detailTabContent">
+			  <div class="tab-pane fade show active table-responsive" id="info" role="tabpanel" aria-labelledby="infoTab">
+			  	
+			  </div>
+			  <div class="tab-pane fade" id="photos" role="tabpanel" aria-labelledby="photosTab">
+			  	
+			  </div>
+
+			  <div class="tab-pane fade" id="map" role="tabpanel" aria-labelledby="mapTab">
+				<form>
+				  <div class="form-row">
+				    <div class="form-group col-md-4">
+				      <label for="routeFrom">From</label>
+				      <input type="text" class="form-control" id="routeFrom" value="Your location" placeholder="Your location">
+				    </div>
+				    <div class="form-group col-md-4">
+				      <label for="routeTo">To</label>
+				      <input type="text" class="form-control" id="routeTo">
+				    </div>
+				    <div class="form-group col-md-2">
+				      <label for="travelMode">Travel Mode</label>
+				      <select id="travelMode" class="form-control">
+				        <option selected value="DRIVING">Driving</option>
+				        <option value="BICYCLING">Bicycling</option>
+				        <option value="TRANSIT">Transit</option>
+				        <option value="WALKING">Walking</option>
+				      </select>
+				  	</div>
+				  	<div class="form-group col-md-2 align-self-end d-flex justify-content-center"">
+				  		<button type="button" class="btn btn-primary" id="getDirc" onclick="searchRoute()">Get Directions</button>
+				  	</div>
+				  </div>
+				</form>
+				<div class="row">
+					<div class='col-3 col-md-1' style="margin-bottom: 10px">
+					<img id="yellowMap" class="img-thumbnail" src="http://cs-server.usc.edu:45678/hw/hw8/images/Pegman.png"/>
+					</div>
+				</div>
+				<div id="realMap"></div>
+				<div id="dPanel"></div>
+
+			  </div>
+
+
+			  <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="reviewTab">
+			  	<div class="dropdown btn-group">
+				  <button class="btn btn-secondary dropdown-toggle" type="button" id="gOrY" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    Google Reviews
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="gOrY">
+				    <a class="dropdown-item"  onclick="googleReview()" ng-click="reviewFalse()">Google Reviews</a>
+				    <a class="dropdown-item"  onclick="yelpReview()" ng-click="reviewTrue()">Yelp Reviews</a>
+				  </div>
+				</div>
+
+				<div class="dropdown btn-group">
+				  <button class="btn btn-secondary dropdown-toggle" type="button" id="rOrder" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    Default Order
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="rOrder">
+				    <a class="dropdown-item" onclick="defaultOrder()">Default Order</a>
+				    <a class="dropdown-item" onclick="highestRating()">Highest Rating</a>
+				    <a class="dropdown-item" onclick="lowestRating()">Lowest Rating</a>
+				    <a class="dropdown-item" onclick="mostRecent()">Most Recent</a>
+				    <a class="dropdown-item" onclick="leastRecent()">Least Recent</a>
+				  </div>
+				</div>
+
+				<div id="reviewContainer">
+					<div class="ngReview" id="gRContainer" ng-hide="reviewCheck">
+						111
+					</div>
+					<div class="ngReview" id="yRContainer" ng-hide="!reviewCheck">
+						222
+					</div>
+				</div>
+			  </div>
+
+			</div>
+		</div>
+		<div class="col-lg-1 col-0"></div>
+	</div>
+	</div>
+	</div>
+
+	<div id="modalContainer"></div>
+
+<script type="text/javascript">
+	//global position
+	//start
+	var gLat;
+	var gLon;
+	//end
+	var eLat;
+	var eLon;
+
+	//Autocomplete
+	var input = document.getElementById('keyword');
+	var options = {
+	  types: ['geocode'],
+	  componentRestrictions: {country: 'us'}
+	};
+	autocomplete = new google.maps.places.Autocomplete(input, options);
+
+	//CheckKeyword
+	$("#keyword").blur(function(){
+
+		if($("#keyword").val() == ""){
+			$("#keyword").addClass("is-invalid");
+		}
+		else if($("#keyword").val().trim() == ""){
+			$("#keyword").addClass("is-invalid");
+		}
+		else{
+			$("#keyword").removeClass("is-invalid");
+		}
+	})
+
+
+	//Location Disabled or not
+	function setLocationD(){
+		$("#location").attr("disabled", "");
+		$("#location").removeClass("is-invalid");
+	}
+	function setLocationA(){
+		document.getElementById("location").removeAttribute("disabled");
+	}
+
+
+	//clear function
+	function resetAll(){
+		var classVal = document.getElementById("keyword").getAttribute("class");
+		classVal = classVal.replace("is-invalid","");
+		document.getElementById("keyword").setAttribute("class", classVal);
+		classVal = document.getElementById("location").getAttribute("class");
+		classVal = classVal.replace("is-invalid","");
+		document.getElementById("location").setAttribute("class", classVal);
+		document.getElementById("location").setAttribute("disabled", "");
+		document.getElementById("form1").reset();
+
+		$("#content").html("");
+		localCategory = undefined;
+		localName = undefined;
+		localAddress = undefined;
+		localID = undefined;
+		currentDetailId = undefined;
+		currentFavoriteID = undefined;
+
+	}
+
+	//CheckLocation
+	$("#location").blur(function(){
+
+		if($("#location").val() == ""){
+			$("#location").addClass("is-invalid");
+		}
+		else if($("#location").val().trim() == ""){
+			$("#location").addClass("is-invalid");
+		}
+		else{s
+			$("#location").removeClass("is-insvalid");
+		}s
+	})s
+
+	//Obtaining User Location
+	var userLat;
+	var userLon;
+	var data;
+	$(document).ready(function(){
+		$.get("http://ip-api.com/json",function(data){
+			$.each(data,function(key,value){
+				if(key == "lat")
+					userLat = value;
+				if(key == "lon")
+					userLon = value;
+			});
+  		});
+	});
+
+	//Table Control(previous next)
+	function firstNext(){
+		document.getElementById("containTable1").style.display = "none";
+		document.getElementById("containTable2").style.display = "block";
+	}
+
+	function secondNext(){
+		document.getElementById("containTable2").style.display = "none";
+		document.getElementById("containTable3").style.display = "block";
+	}
+
+	function secondPrevious(){
+		document.getElementById("containTable1").style.display = "block";
+		document.getElementById("containTable2").style.display = "none";
+	}
+
+	function  thirdPrevious(){
+		document.getElementById("containTable2").style.display = "block";
+		document.getElementById("containTable3").style.display = "none";
+	}
+
+
+	//Form Submit
+	var localCategory;
+	var localName;
+	var localAddress;
+	var localID;
+	var currentDetailId;
+	var currentFavoriteID;
+	function submitForm(){
+		if(!$("#keyword").hasClass("is-invalid") && !$("#location").hasClass("is-invalid")){
+			var data = $("#form1").serialize() + "&lon=" + userLon + "&lat=" + userLat;
+			gLon = undefined;
+			gLat = undefined;
+
+			var scope = angular.element('body').scope();
+			scope.containFalse();
+			scope.$apply();
+			
+			var progressBar = '<div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div></div>'
+			$("#content").html(progressBar);
+
+
+			$.ajax({
+				type:"get",
+				url:"/search",
+				data:data,
+				success:function(data){
+					var obj = JSON.parse(data);
+
+					//pass global lat lon;
+					gLon = obj.lon;
+					gLat = obj.lat;
+
+					if(obj.results){
+						var results = obj.results;
+						if(results.length != 0){
+							var htmlContent = "<div id='detailsBtnDivls' class='d-flex justify-content-end'><button id='details' class='btn btn-outline-dark' disabled ng-click=\"containTrue()\">Details<span class='fas fa-angle-right'></span></button></div>";
+							htmlContent += "<div class='table-responsive' id='containTable1'><table class='table contentTable'><thead><tr><th>#</th><th>Category</th><th>Name</th><th>Address</th><th>Favorite</th><th>Detail</th></thead><tbody>";
+							var number = 1;
+							var progressBar = '<div class="progress"><div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div></div>'
+							$("#content").html(progressBar);
+							for(var i=0; i<results.length; i++, number++){
+								htmlContent += "<tr  id='" + results[i].place_id + "'><th scope='row'>" + number + "</th>";
+								htmlContent += "<td><img src='" + results[i].icon + "'width='30px'/></td>";
+								htmlContent += "<td class='text-nowrap'>" + results[i].name+ "</td>";
+								htmlContent += "<td class='text-nowrap'>" + results[i].vicinity + "</td>";
+								htmlContent += "<td><button type='button' class='tableFBtn btn btn-outline-dark not-click'><span class='far fa-star'></span></button></td>";
+								htmlContent += "<td><button type='button' class='tableDBtn btn btn-outline-dark' ng-click=\"containTrue()\"><span class='fas fa-angle-right'></span></button></td></tr>";
+							}
+							htmlContent += "</tbody></table>";
+							if(obj.results2){
+								htmlContent += "<div class='d-flex justify-content-center'><button type='button' class='btn btn-outline-dark' onclick='firstNext()'>Next</button></div></div>";
+							}
+							else{
+								htmlContent += "</div>";
+							}
+							if(obj.results2){
+								htmlContent += "<div id='containTable2' style='display:none' class='table-responsive'><table class='table contentTable'><thead><tr><th scope='col'>#</th><th scope='col'>Category</th><th scope='col'>Name</th><th scope='col'>Address</th><th scope='col'>Favorite</th><th scope='col'>Detail</th></thead><tbody>";
+								results = obj.results2;
+								var number = 1;
+								for(var i=0; i<results.length; i++, number++){
+									htmlContent += "<tr id='" + results[i].place_id + "'><th scope='row'>" + number + "</th>";
+									htmlContent += "<td><img src='" + results[i].icon + "'width='30px'/></td>";
+									htmlContent += "<td class='text-nowrap'>" + results[i].name+ "</td>";
+									htmlContent += "<td class='text-nowrap'>" + results[i].vicinity + "</td>";
+									htmlContent += "<td><button type='button' class='tableFBtn btn btn-outline-dark not-click'><span class='far fa-star'></span></button></td>";
+									htmlContent += "<td><button type='button' class='tableDBtn btn btn-outline-dark' ng-click=\"containTrue()\"><span class='fas fa-angle-right'></span></button></td></tr>";
+								}
+								htmlContent += "</tbody></table>";
+								if(obj.results3){
+									htmlContent += "<div class='d-flex justify-content-center'><button type='button' class='btn btn-outline-dark' style='margin-right:10px' onclick='secondPrevious()'>Previous</button><button type='button' class='btn btn-outline-dark' style='margin-left:10px' onclick='secondNext()'>Next</button></div></div>";
+								}
+								else{
+									htmlContent += "<div class='d-flex justify-content-center'><button type='button' class='btn btn-outline-dark' onclick='secondPrevious()'>Previous</button></div></div>";
+								}
+								if(obj.results3){
+									results = obj.results3;
+									htmlContent += "<div id='containTable3' style='display:none' class='table-responsive'><table class='table contentTable'><thead><tr><th scope='col'>#</th><th scope='col'>Category</th><th scope='col'>Name</th><th scope='col'>Address</th><th scope='col'>Favorite</th><th scope='col'>Detail</th></thead><tbody>";
+									var number = 1;
+									for(var i=0; i<results.length; i++, number++){
+										htmlContent += "<tr id='" + results[i].place_id + "'><th scope='row'>" + number + "</th>";
+										htmlContent += "<td><img src='" + results[i].icon + "'width='30px'/></td>";
+										htmlContent += "<td class='text-nowrap'>" + results[i].name+ "</td>";
+										htmlContent += "<td class='text-nowrap'>" + results[i].vicinity + "</td>";
+										htmlContent += "<td><button type='button' class='tableFBtn btn btn-outline-dark not-click'><span class='far fa-star'></span></button></td>";
+										htmlContent += "<td><button type='button' class='tableDBtn btn btn-outline-dark' ng-click=\"containTrue()\"><span class='fas fa-angle-right'></span></button></td></tr>";
+									}
+									htmlContent += "</tbody></table><div class='d-flex justify-content-center'><button type='button' class='btn btn-outline-dark' onclick='thirdPrevious()'>Previous</button></div></div>";
+								}
+							}
+
+							var scope = angular.element('#content').scope();
+
+        					scope.refresh(htmlContent);
+        					scope.$apply();
+   
+							//document.getElementById("content").innerHTML = htmlContent;
+
+							$("#content table tr").each(function(){
+								var checkID = $(this).attr("id");
+								if(localStorage.getItem(checkID)){
+									var buttonHTML = '<span class="fas fa-star yellow-star"></span>';
+									$(this).children("td").eq(3).find("button").html(buttonHTML);
+									$(this).children("td").eq(3).find("button").removeClass('not-click');
+								}
+							})
+
+							$('div#content .tableDBtn.btn.btn-outline-dark').on('click',function(){
+								if(!currentDetailId){
+									$(this).parents("tr").attr("class", "table-warning");
+									$('#details').removeAttr("disabled");
+									var place_id = $(this).parents("tr").attr("id");
+									currentDetailId = place_id;
+
+									localID = place_id;
+									localCategory = $(this).parents("tr").children("td").eq(0).html();
+									localName = $(this).parents("tr").children("td").eq(1).html();
+									localAddress = $(this).parents("tr").children("td").eq(2).html();
+
+									searchDetail(place_id);
+									$('#details').click(function(){
+										searchDetail(place_id);
+									})
+								}
+								else{
+									$("#" + currentDetailId).removeClass("table-warning");
+									$(this).parents("tr").attr("class", "table-warning");
+									var place_id = $(this).parents("tr").attr("id");
+									currentDetailId = place_id;
+
+									localID = place_id;
+									localCategory = $(this).parents("tr").children("td").eq(0).html();
+									localName = $(this).parents("tr").children("td").eq(1).html();
+									localAddress = $(this).parents("tr").children("td").eq(2).html();
+
+									searchDetail(place_id);
+									$('#details').click(function(){
+										searchDetail(place_id);
+									})
+								}
+							});
+
+							//add localStorage function
+							$('div#content .tableFBtn.btn.btn-outline-dark').on('click', function(){						
+								if($(this).hasClass("not-click")){
+									var buttonHTML = '<span class="fas fa-star yellow-star"></span>';
+									$(this).html(buttonHTML);
+									$(this).removeClass('not-click');
+									var storId = $(this).parents("tr").attr("id");
+									var storObj = {};
+									storObj.category = $(this).parents("tr").children("td").eq(0).html();
+									storObj.name = $(this).parents("tr").children("td").eq(1).html();
+									storObj.address = $(this).parents("tr").children("td").eq(2).html();
+									localStorage.setItem(storId, JSON.stringify(storObj));
+								}
+								else{
+									var buttonHTML = '<span class="far fa-star"></span>';
+									$(this).html(buttonHTML);
+									$(this).addClass('not-click');
+									var storId = $(this).parents("tr").attr("id");
+									localStorage.removeItem(storId);
+								}
+							})
+						}
+						else{
+							document.getElementById("content").innerHTML = "<div class='noRecords alert alert-warning'>No records.</div>";
+						}
+					}
+					else{
+						document.getElementById("content").innerHTML = "<div class='errorDiv alert alert-danger'>Failed to get search results.</div>";
+					} 
+				}
+			});
+		}
+	};
+
+	//search Detail
+	function searchDetail(place_id){
+		$.ajax({
+			url:"/detail",
+			data:{place_id: place_id},
+			type:"get",
+			success: function(data){
+				dealDetail(data);
+			}
+		})
+	}
+
+	//deal with Infor tab
+	var photoInfo;
+	var gReviewInfo;
+	var yReviewInfo;
+	function dealDetail(data){
+
+
+		var htmlContent = '<table class="table table-striped"><tbody>';
+
+		var obj = JSON.parse(data);
+
+		//pass yelp reviews.
+		if(obj.yelp){
+			yReviewInfo = obj.yelp;
+		}
+		else{
+			yReviewInfo = undefined;
+		}
+
+		obj = obj.result;
+
+		//favorite this button
+		if(localStorage.getItem(localID)){
+			var buttonHTML = '<span class="fas fa-star yellow-star"></span>';
+			$("#favorThis").html(buttonHTML);
+			$("#favorThis").removeClass('not-click');
+		}
+		else{
+			var buttonHTML = '<span class="far fa-star"></span>';
+			$("#favorThis").html(buttonHTML);
+			$("#favorThis").addClass('not-click');
+		}
+
+
+
+		// name
+		var placeName = '<p class="font-weight-bold">' + obj.name + '</p>';
+		$("#placeName").html(placeName);
+
+		if(obj.formatted_address){
+			htmlContent += '<tr><th scope="row">Address</th>';
+			htmlContent += '<td class="text-nowrap">' + obj.formatted_address +'</td></tr>';
+		}
+
+		if(obj.international_phone_number){
+			htmlContent += '<tr><th scope="row">Phone Number</th>';
+			htmlContent += '<td class="text-nowrap">' + obj.international_phone_number + '</td></tr>';
+		}
+
+		if(obj.price_level){
+			htmlContent += '<tr><th scope="row">Prive Level</th><td>';
+			var level = parseInt(obj.price_level);
+			for(var i = 0; i < level ; ++i){
+				htmlContent += '$';
+			}
+			htmlContent += '</td></tr>';
+		}
+
+		if(obj.rating){
+			htmlContent += '<tr><th scope="row">Rating</th>';
+			htmlContent += '<td>' + obj.rating +' ';
+			htmlContent += '<div class="stars-outer"><div id="stars" class= "stars-inner"></div></div></td></tr>';
+		}
+
+		if(obj.url){
+			htmlContent += '<tr><th scope="row">Google Page</th>';
+			htmlContent += '<td class="text-nowrap"><a class="btn-link" href="'+ obj.url +'" target="_blank">' + obj.url +'</a></td></tr>';
+		}
+
+		if(obj.website){
+			htmlContent += '<tr><th scope="row">Website</th>';
+			htmlContent += '<td class="text-nowrap"><a class="btn-link" href="'+ obj.website +'" target="_blank">' + obj.website +'</a></td></tr>';
+		}
+
+		if(obj.opening_hours){
+			htmlContent += '<tr><th scope="row">Hours</th>';
+			var utcOffset = parseInt(obj.utc_offset);
+			var time = moment.utc().add(utcOffset, 'm');
+			var dayNumber = (time.day() + 7 -1) %7;
+
+			if(obj.opening_hours.open_now == false){
+				htmlContent += '<td class="text-nowrap">Closed';
+			}
+			else{
+				htmlContent += '<td class="text-nowrap">Open now:';
+				var str = obj.opening_hours.weekday_text[dayNumber];
+				var index = str.indexOf(":");
+				htmlContent += str.substr(index+1);
+			}
+ 
+
+			htmlContent += '<button type="button" class="btn btn-link" data-toggle="modal" data-target="#dailyOpenHours">Daily open hours</button></td></tr></table>';
+
+			var modalContent = '<div class="modal fade" id="dailyOpenHours" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">';
+  			modalContent += '<div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="exampleModalLabel">Open hours</h5>';
+   			modalContent += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div><div class="modal-body table-responsive">';
+
+   			modalContent += '<table class="table"><tbody>';
+       		for(var i = 0 ; i<7 ; i++){
+       			if(i==0){
+       				var str = obj.opening_hours.weekday_text[dayNumber];
+       				var index = str.indexOf(":");
+       				modalContent += '<tr><td><b>' + str.substr(0,index) + '</b></td><td class="text-nowrap"><b>' + str.substr(index+1) + '</b></td></tr>';
+       			}
+       			else{
+       				var temp = (dayNumber + i) % 7;
+       				var str = obj.opening_hours.weekday_text[temp];
+       				var index = str.indexOf(":");
+       				modalContent += '<tr><td><b>' + str.substr(0,index) + '</b></td><td class="text-nowrap"><b>' + str.substr(index+1) + '</b></td></tr>';
+       			}
+       		}
+       		modalContent += '</tbody></table>';
+
+      		modalContent += '</div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button></div></div></div></div>';
+      		document.getElementById('modalContainer').innerHTML = modalContent;
+		}
+
+		document.getElementById('info').innerHTML = htmlContent;
+
+		//draw stars
+		if(obj.rating){
+			const starPercentage = ( obj.rating / 5) * 100;
+	  		starPercentageRounded = (Math.round(starPercentage / 10) * 10 ).toString();
+	  		starPercentageRounded += '%';
+	  		document.getElementById("stars").style.width = starPercentageRounded;
+  		}
+
+  		//pass photos information
+  		if(obj.photos){
+  			photoInfo = obj.photos;
+  		}
+  		else{
+  			photoInfo = undefined;
+  		}
+
+  		//pass reviews information
+  		if(obj.reviews){
+  			gReviewInfo = obj.reviews;
+  			$("#gOrY").html("Google Review");
+			$("#rOrder").html("Default Order");
+			var gReview = obj.reviews;
+
+			var reviewContent = "";
+			for(var i=0; i<gReview.length; ++i){
+				reviewContent += '<div class="card eachReview"><div class="row"><div class="col-2 col-md-1 "><img width="100%" src="' + gReview[i].profile_photo_url +'"></div>';
+				reviewContent += '<div class="col-10 col-lg-11">';
+				reviewContent += '<h5 class="card-title"><a href="' + gReview[i].author_url + '" target="_blank">' + gReview[i].author_name + '</a></h5>';
+				reviewContent += '<h6 class="card-subtitle mb-2 text-muted">';
+				var starNum = parseInt(gReview[i].rating);
+				for (var j = 0; j<starNum ; ++j){
+					reviewContent += '<span class="fas fa-star" style="color:#f8ce0b;"></span>';
+				}
+				reviewContent += moment.unix(parseInt(gReview[i].time)).format("YYYY-MM-DD HH:mm:ss") +'</h6>';
+				reviewContent += '<p class="card-text">' + gReview[i].text + '</p></div></div></div>';
+			}
+
+			$("#gRContainer").html(reviewContent);
+  		}
+  		else{
+  			gReviewInfo = undefined;
+  			$("#gOrY").html("Google Review");
+			$("#rOrder").html("Default Order");
+			reviewContent = '<div class="noRecords alert alert-warning">No records.</div>';
+			$("#gRContainer").html(reviewContent);
+  		}
+  		var scope = angular.element('#reviewContainer').scope();
+		scope.setReviewCheck(htmlContent);
+        scope.$apply();
+
+
+
+  		//set Map forms
+  		var toNameAddress = obj.name + "," + obj.formatted_address;
+  		$("#routeTo").val(toNameAddress);
+  		$("#routeTo").attr("readonly","");
+  		eLat = obj.geometry.location.lat;
+  		eLon = obj.geometry.location.lng;
+
+  		//dealwith twitter btn
+  		var hrefString = "https://twitter.com/intent/tweet?text=";
+  		var tempString = "Check out " + obj.name + " located at " + obj.formatted_address + ". Website: ";
+  		hrefString += encodeURIComponent(tempString) + "&url=";
+  		if(obj.website){
+  			tempString = obj.website;
+  		}
+  		else{
+  			tempString = obj.url;
+  		}
+  		hrefString += encodeURIComponent(tempString) + "&hashtags=TravelAndEnertainmentSearch";
+  		$("#twitter").attr("href", hrefString);
+
+  		$("#detailTab li:first-child a").tab("show");
+
+	}
+
+	//Load photos
+
+	function photoLoad(){
+		var photoContent = "";
+		if(photoInfo){
+			var photoContent1 = '<div class="row"><div id="photoGroup1" class="col-lg-3 col-12">';
+				var photoContent2 = '<div id="photoGroup2" class="col-lg-3 col-12">';
+				var photoContent3 = '<div id="photoGroup3" class="col-lg-3 col-12">';
+				var photoContent4 = '<div id="photoGroup4" class="col-lg-3 col-12">';
+
+	  		for(var i = 0; i< photoInfo.length; ++i){
+	  			var pGroupId = i%4+1;
+	  			if(pGroupId==1){
+	  				photoContent1 += '<a href="images/' + i +'.jpeg" target="_blank"><img class="img-thumbnail photo" src="normal/' + i + '.jpeg?t=' + Math.random() + '"/></a>';
+	  			}
+	  			if(pGroupId==2){
+	  				photoContent2 += '<a href="images/' + i +'.jpeg" target="_blank"><img class="img-thumbnail photo" src="normal/' + i + '.jpeg?t=' + Math.random() + '"/></a>';
+	  			}
+	  			if(pGroupId==3){
+	  				photoContent3 += '<a href="images/' + i +'.jpeg" target="_blank"><img class="img-thumbnail photo" src="normal/' + i + '.jpeg?t=' + Math.random() + '"></a>';
+	  			}
+	  			if(pGroupId==4){
+	  				photoContent4 += '<a href="images/' + i +'.jpeg" target="_blank"><img class="img-thumbnail photo" src="normal/' + i + '.jpeg?t=' + Math.random() + '"/></a>';
+	  			}
+	  		}
+	  		photoContent = photoContent1 + "</div>" + photoContent2 + "</div>" + photoContent3 + "</div>" + photoContent4 + "</div></div>";
+	  		document.getElementById("photos").innerHTML = photoContent;
+		}
+		else{
+  			photoContent += '<div class="noRecords alert alert-warning">No records.</div>';
+  			document.getElementById("photos").innerHTML = photoContent;
+  		}
+	}
+
+	//deal with reviews
+	function googleReview(){
+		$("#gOrY").html("Google Review");
+		if($("#rOrder").html() == "Default Order"){
+			defaultOrder();
+		}
+		else if($("#rOrder").html() == "Highest Rating"){
+			highestRating();
+		}
+		else if($("#rOrder").html() == "Lowest Rating"){
+			lowestRating();
+		}
+		else if($("#rOrder").html() == "Most Recent"){
+			mostRecent();
+		}
+		else if($("#rOrder").html() == "Least Recent"){
+			leastRecent();
+		}
+	}
+
+	function yelpReview(){
+		$("#gOrY").html("Yelp Review");
+		if($("#rOrder").html() == "Default Order"){
+			defaultOrder();
+		}
+		else if($("#rOrder").html() == "Highest Rating"){
+			highestRating();
+		}
+		else if($("#rOrder").html() == "Lowest Rating"){
+			lowestRating();
+		}
+		else if($("#rOrder").html() == "Most Recent"){
+			mostRecent();
+		}
+		else if($("#rOrder").html() == "Least Recent"){
+			leastRecent();
+		}
+	}
+
+	function defaultOrder(){
+		$("#rOrder").html("Default Order");
+		if($("#gOrY").html() == "Google Review"){
+			var reviewContent ="";
+			if(gReviewInfo){
+				for(var i=0; i<gReviewInfo.length; ++i){
+					reviewContent += '<div class="card eachReview"><div class="row"><div class="col-2 col-md-1"><img width="100%" src="' + gReviewInfo[i].profile_photo_url +'"></div>';
+					reviewContent += '<div class="col-10 col-lg-11">';
+					reviewContent += '<h5 class="card-title"><a href="' + gReviewInfo[i].author_url + '" target="_blank">' + gReviewInfo[i].author_name + '</a></h5>';
+					var starNum = parseInt(gReviewInfo[i].rating);
+					reviewContent += '<h6 class="card-subtitle mb-2 text-muted">';
+					for (var j = 0; j<starNum ; ++j){
+						reviewContent += '<span class="fas fa-star" style="color:#f8ce0b;"></span>';
+					}
+					reviewContent += moment.unix(parseInt(gReviewInfo[i].time)).format("YYYY-MM-DD HH:mm:ss") +'</h6>';
+					reviewContent += '<p class="card-text">' + gReviewInfo[i].text + '</p></div></div></div>';
+				}
+				$("#gRContainer").html(reviewContent);			
+			}
+			else{
+				reviewContent = '<div class="noRecords alert alert-warning">No records.</div>';
+				$("#gRContainer").html(reviewContent);
+			}
+		}
+		//yelp
+		else{
+			var reviewContent ="";
+			if(yReviewInfo){
+				for(var i=0; i<yReviewInfo.length; ++i){
+					reviewContent += '<div class="card eachReview"><div class="row"><div class="col-2 col-md-1"><img width="100%" src="' + yReviewInfo[i].user.image_url +'"></div>';
+					reviewContent += '<div class="col-10 col-lg-11">';
+					reviewContent += '<h5 class="card-title"><a href="' + yReviewInfo[i].url + '" target="_blank">' + yReviewInfo[i].user.name + '</a></h5>';
+					var starNum = parseInt(yReviewInfo[i].rating);
+					reviewContent += '<h6 class="card-subtitle mb-2 text-muted">';
+					for (var j = 0; j<starNum ; ++j){
+						reviewContent += '<span class="fas fa-star" style="color:#f8ce0b;"></span>';
+					}
+					reviewContent += yReviewInfo[i].time_created +'</h6>';
+					reviewContent += '<p class="card-text">' + yReviewInfo[i].text + '</p></div></div></div>';
+				}
+				$("#yRContainer").html(reviewContent);			
+			}
+			else{
+				reviewContent = '<div class="noRecords alert alert-warning">No records.</div>';
+				$("#yRContainer").html(reviewContent);
+			}
+
+		}
+	}
+
+	function highestRating(){
+		$("#rOrder").html("Highest Rating");
+		if($("#gOrY").html() == "Google Review"){
+			var reviewContent ="";
+			if(gReviewInfo){
+				for(var k=5; k>=0; k--){
+					for(var i=0; i<gReviewInfo.length; ++i){
+						if(parseInt(gReviewInfo[i].rating)==k){
+							reviewContent += '<div class="card eachReview"><div class="row"><div class="col-2 col-md-1"><img width="100%" src="' + gReviewInfo[i].profile_photo_url +'"></div>';
+							reviewContent += '<div class="col-10 col-lg-11">';
+							reviewContent += '<h5 class="card-title"><a href="' + gReviewInfo[i].author_url + '" target="_blank">' + gReviewInfo[i].author_name + '</a></h5>';
+							var starNum = parseInt(gReviewInfo[i].rating);
+							reviewContent += '<h6 class="card-subtitle mb-2 text-muted">';
+							for (var j = 0; j<starNum ; ++j){
+								reviewContent += '<span class="fas fa-star" style="color:#f8ce0b;"></span>';
+							}
+							reviewContent += moment.unix(parseInt(gReviewInfo[i].time)).format("YYYY-MM-DD HH:mm:ss") +'</h6>';
+							reviewContent += '<p class="card-text">' + gReviewInfo[i].text + '</p></div></div></div>';
+						}
+					}
+				}
+				$("#gRContainer").html(reviewContent);
+			}
+			else{
+				reviewContent = '<div class="noRecords alert alert-warning">No records.</div>';
+				$("#gRContainer").html(reviewContent);
+			}
+		}
+		//yelp
+		else{
+			var reviewContent ="";
+			if(yReviewInfo){
+				for(var k=5; k>=0; k--){
+					for(var i=0; i<yReviewInfo.length; ++i){
+						if(parseInt(yReviewInfo[i].rating)==k){
+							reviewContent += '<div class="card eachReview"><div class="row"><div class="col-2 col-md-1"><img width="100%" src="' + yReviewInfo[i].user.image_url +'"></div>';
+							reviewContent += '<div class="col-10 col-lg-11">';
+							reviewContent += '<h5 class="card-title"><a href="' + yReviewInfo[i].author_url + '" target="_blank">' + yReviewInfo[i].user.name + '</a></h5>';
+							var starNum = parseInt(yReviewInfo[i].rating);
+							reviewContent += '<h6 class="card-subtitle mb-2 text-muted">';
+							for (var j = 0; j<starNum ; ++j){
+								reviewContent += '<span class="fas fa-star" style="color:#f8ce0b;"></span>';
+							}
+							reviewContent += yReviewInfo[i].time_created +'</h6>';
+							reviewContent += '<p class="card-text">' + yReviewInfo[i].text + '</p></div></div></div>';
+						}
+					}
+				}
+				$("#yRContainer").html(reviewContent);
+			}
+			else{
+				reviewContent = '<div class="noRecords alert alert-warning">No records.</div>';
+				$("#yRContainer").html(reviewContent);
+			}
+		}
+
+	}
+
+	function lowestRating(){
+		$("#rOrder").html("Lowest Rating");
+		if($("#gOrY").html() == "Google Review"){
+			var reviewContent ="";
+			if(gReviewInfo){
+				for(var k=0; k<=5; k++){
+					for(var i=0; i<gReviewInfo.length; ++i){
+						if(parseInt(gReviewInfo[i].rating)==k){
+							reviewContent += '<div class="card eachReview"><div class="row"><div class="col-2 col-md-1"><img width="100%" src="' + gReviewInfo[i].profile_photo_url +'"></div>';
+							reviewContent += '<div class="col-10 col-lg-11">';
+							reviewContent += '<h5 class="card-title"><a href="' + gReviewInfo[i].author_url + '" target="_blank">' + gReviewInfo[i].author_name + '</a></h5>';
+							var starNum = parseInt(gReviewInfo[i].rating);
+							reviewContent += '<h6 class="card-subtitle mb-2 text-muted">';
+							for (var j = 0; j<starNum ; ++j){
+								reviewContent += '<span class="fas fa-star" style="color:#f8ce0b;"></span>';
+							}
+							reviewContent += moment.unix(parseInt(gReviewInfo[i].time)).format("YYYY-MM-DD HH:mm:ss") +'</h6>';
+							reviewContent += '<p class="card-text">' + gReviewInfo[i].text + '</p></div></div></div>';
+						}
+					}
+				}
+				$("#gRContainer").html(reviewContent);
+			}
+			else{
+				reviewContent = '<div class="noRecords alert alert-warning">No records.</div>';
+				$("#gRContainer").html(reviewContent);
+			}
+		}
+		//yelp
+		else{
+			var reviewContent ="";
+			if(yReviewInfo){
+				for(var k=0; k<=5; k++){
+					for(var i=0; i<yReviewInfo.length; ++i){
+						if(parseInt(yReviewInfo[i].rating)==k){
+							reviewContent += '<div class="card eachReview"><div class="row"><div class="col-2 col-md-1"><img width="100%" src="' + yReviewInfo[i].user.image_url +'"></div>';
+							reviewContent += '<div class="col-10 col-lg-11">';
+							reviewContent += '<h5 class="card-title"><a href="' + yReviewInfo[i].author_url + '" target="_blank">' + yReviewInfo[i].user.name + '</a></h5>';
+							var starNum = parseInt(yReviewInfo[i].rating);
+							reviewContent += '<h6 class="card-subtitle mb-2 text-muted">';
+							for (var j = 0; j<starNum ; ++j){
+								reviewContent += '<span class="fas fa-star" style="color:#f8ce0b;"></span>';
+							}
+							reviewContent += yReviewInfo[i].time_created +'</h6>';
+							reviewContent += '<p class="card-text">' + yReviewInfo[i].text + '</p></div></div></div>';
+						}
+					}
+				}
+				$("#yRContainer").html(reviewContent);
+			}
+			else{
+				reviewContent = '<div class="noRecords alert alert-warning">No records.</div>';
+				$("#yRContainer").html(reviewContent);
+			}
+		}
+	}
+
+	function mostRecent(){
+		$("#rOrder").html("Most Recent");
+
+		if($("#gOrY").html() == "Google Review"){
+			var reviewContent ="";
+			if(gReviewInfo){
+				var list = [];
+				var index = 0;
+				var maxTime;
+				while(list.length != gReviewInfo.length){
+					if(list.indexOf(index)<0){
+						maxTime = moment.unix(gReviewInfo[index].time);	
+						temp = index;
+						for(var i=index; i<gReviewInfo.length; ++i){
+							var iTime = moment.unix(gReviewInfo[i].time);
+							if(moment(iTime).isAfter(maxTime)){
+								if(list.indexOf(i) < 0){
+									temp = i;
+									maxTime = iTime;
+								}
+							}
+						}
+						list.push(temp);
+					}
+					else{
+						index++;
+					}
+				}
+				for(var i=0; i<gReviewInfo.length; ++i){
+					reviewContent += '<div class="card eachReview"><div class="row"><div class="col-2 col-md-1"><img width="100%" src="' + gReviewInfo[list[i]].profile_photo_url +'"></div>';
+					reviewContent += '<div class="col-10 col-lg-11">';
+					reviewContent += '<h5 class="card-title"><a href="' + gReviewInfo[list[i]].author_url + '" target="_blank">' + gReviewInfo[list[i]].author_name + '</a></h5>';
+					var starNum = parseInt(gReviewInfo[list[i]].rating);
+					reviewContent += '<h6 class="card-subtitle mb-2 text-muted">';
+					for (var j = 0; j<starNum ; ++j){
+						reviewContent += '<span class="fas fa-star" style="color:#f8ce0b;"></span>';
+					}
+					reviewContent += moment.unix(parseInt(gReviewInfo[list[i]].time)).format("YYYY-MM-DD HH:mm:ss") +'</h6>';
+					reviewContent += '<p class="card-text">' + gReviewInfo[list[i]].text + '</p></div></div></div>';
+				}
+				$("#gRContainer").html(reviewContent);
+			}
+			else{
+				reviewContent = '<div class="noRecords alert alert-warning">No records.</div>';
+				$("#gRContainer").html(reviewContent);
+			}
+		}
+		//yelp
+		else{
+			var reviewContent ="";
+			if(yReviewInfo){
+				var list = [];
+				var index = 0;
+				var maxTime;
+				while(list.length != yReviewInfo.length){
+					if(list.indexOf(index)<0){
+						maxTime = yReviewInfo[index].time_created;	
+						temp = index;
+						for(var i=index; i<yReviewInfo.length; ++i){
+							var iTime = yReviewInfo[i].time_created;
+							if(moment(iTime).isAfter(maxTime)){
+								if(list.indexOf(i) < 0){
+									temp = i;
+									maxTime = iTime;
+								}
+							}
+						}
+						list.push(temp);
+					}
+					else{
+						index++;
+					}
+				}
+				for(var i=0; i<yReviewInfo.length; ++i){
+					reviewContent += '<div class="card eachReview"><div class="row"><div class="col-2 col-md-1"><img width="100%" src="' + yReviewInfo[list[i]].user.image_url +'"></div>';
+					reviewContent += '<div class="col-10 col-lg-11">';
+					reviewContent += '<h5 class="card-title"><a href="' + yReviewInfo[list[i]].url + '" target="_blank">' + yReviewInfo[list[i]].user.name + '</a></h5>';
+					var starNum = parseInt(yReviewInfo[list[i]].rating);
+					reviewContent += '<h6 class="card-subtitle mb-2 text-muted">';
+					for (var j = 0; j<starNum ; ++j){
+						reviewContent += '<span class="fas fa-star" style="color:#f8ce0b;"></span>';
+					}
+					reviewContent += yReviewInfo[list[i]].time_created +'</h6>';
+					reviewContent += '<p class="card-text">' + yReviewInfo[list[i]].text + '</p></div></div></div>';
+				}
+				$("#yRContainer").html(reviewContent);
+			}
+			else{
+				reviewContent = '<div class="noRecords alert alert-warning">No records.</div>';
+				$("#yRContainer").html(reviewContent);
+			}
+		}
+	}
+
+	function leastRecent(){
+		$("#rOrder").html("Least Recent");
+		if($("#gOrY").html() == "Google Review"){
+			var reviewContent ="";
+			if(gReviewInfo){
+				var list = [];
+				var index = 0;
+				var maxTime;
+				while(list.length != gReviewInfo.length){
+					if(list.indexOf(index)<0){
+						maxTime = moment.unix(gReviewInfo[index].time);	
+						temp = index;
+						for(var i=index; i<gReviewInfo.length; ++i){
+							var iTime = moment.unix(gReviewInfo[i].time);
+							if(moment(iTime).isBefore(maxTime)){
+								if(list.indexOf(i) < 0){
+									temp = i;
+									maxTime = iTime;
+								}
+							}
+						}
+						list.push(temp);
+					}
+					else{
+						index++;
+					}
+				}
+				for(var i=0; i<gReviewInfo.length; ++i){
+					reviewContent += '<div class="card eachReview"><div class="row"><div class="col-2 col-md-1"><img width="100%" src="' + gReviewInfo[list[i]].profile_photo_url +'"></div>';
+					reviewContent += '<div class="col-10 col-lg-11">';
+					reviewContent += '<h5 class="card-title"><a href="' + gReviewInfo[list[i]].author_url + '" target="_blank">' + gReviewInfo[list[i]].author_name + '</a></h5>';
+					var starNum = parseInt(gReviewInfo[list[i]].rating);
+					reviewContent += '<h6 class="card-subtitle mb-2 text-muted">';
+					for (var j = 0; j<starNum ; ++j){
+						reviewContent += '<span class="fas fa-star" style="color:#f8ce0b;"></span>';
+					}
+					reviewContent += moment.unix(parseInt(gReviewInfo[list[i]].time)).format("YYYY-MM-DD HH:mm:ss") +'</h6>';
+					reviewContent += '<p class="card-text">' + gReviewInfo[list[i]].text + '</p></div></div></div>';
+				}
+				$("#gRContainer").html(reviewContent);
+			}
+			else{
+				reviewContent = '<div class="noRecords alert alert-warning">No records.</div>';
+				$("#gRContainer").html(reviewContent);
+			}
+		}
+		//yelp
+		else{
+			var reviewContent ="";
+			if(yReviewInfo){
+				var list = [];
+				var index = 0;
+				var maxTime;
+				while(list.length != yReviewInfo.length){
+					if(list.indexOf(index)<0){
+						maxTime = yReviewInfo[index].time_created;	
+						temp = index;
+						for(var i=index; i<yReviewInfo.length; ++i){
+							var iTime = yReviewInfo[i].time_created;
+							if(moment(iTime).isBefore(maxTime)){
+								if(list.indexOf(i) < 0){
+									temp = i;
+									maxTime = iTime;
+								}
+							}
+						}
+						list.push(temp);
+					}
+					else{
+						index++;
+					}
+				}
+				for(var i=0; i<yReviewInfo.length; ++i){
+					reviewContent += '<div class="card eachReview"><div class="row"><div class="col-2 col-md-1"><img width="100%" src="' + yReviewInfo[list[i]].user.image_url +'"></div>';
+					reviewContent += '<div class="col-10 col-lg-11">';
+					reviewContent += '<h5 class="card-title"><a href="' + yReviewInfo[list[i]].url + '" target="_blank">' + yReviewInfo[list[i]].user.name + '</a></h5>';
+					var starNum = parseInt(yReviewInfo[list[i]].rating);
+					reviewContent += '<h6 class="card-subtitle mb-2 text-muted">';
+					for (var j = 0; j<starNum ; ++j){
+						reviewContent += '<span class="fas fa-star" style="color:#f8ce0b;"></span>';
+					}
+					reviewContent += yReviewInfo[list[i]].time_created +'</h6>';
+					reviewContent += '<p class="card-text">' + yReviewInfo[list[i]].text + '</p></div></div></div>';
+				}
+				$("#yRContainer").html(reviewContent);
+			}
+			else{
+				reviewContent = '<div class="noRecords alert alert-warning">No records.</div>';
+				$("#yRContainer").html(reviewContent);
+			}
+		}
+	}
+
+
+	//autocomplete of From
+	var input = document.getElementById('routeFrom');
+	var options = {
+	  types: ['geocode'],
+	  componentRestrictions: {country: 'us'}
+	};
+	autocomplete = new google.maps.places.Autocomplete(input, options);
+
+	//setmap
+	var map;
+	var marker;
+	var panorama;
+	function initMap() {
+		var val=$('input:radio[name="from"]:checked').val();
+		if(val == "other"){
+			var strName = $("#location").val();
+ 			$("#routeFrom").val(strName);
+ 			$("#routeFrom").attr("placeholder",strName);
+		}
+		else{
+			$("#routeFrom").val("Your location");
+		}
+		directionsDisplay = new google.maps.DirectionsRenderer();
+	    map = new google.maps.Map(document.getElementById('realMap'), {
+	      	center: {lat: eLat, lng: eLon},
+	      	zoom: 14
+	    });
+	    marker = new google.maps.Marker({
+		    position: {lat: eLat, lng: eLon},
+		    map: map,
+		});
+		directionsDisplay.setMap(map);
+		directionsDisplay.setPanel(document.getElementById('dPanel'));
+	}
+
+
+	//route search function
+	var directionsDisplay;
+	var directionsService = new google.maps.DirectionsService();
+	function searchRoute(){
+		var origin;
+		if($("#routeFrom").val() == "Your location" || $("#routeFrom").val() ==""){
+			origin = {
+				lat:gLat,
+				lng:gLon,
+			}
+		}
+		else {
+			origin = $("#routeFrom").val();
+		}
+		var dest = $("#routeTo").val();
+		var mode = $("#travelMode").val();
+		alert(mode);
+		request = {
+			origin: origin,
+			destination: dest,
+			provideRouteAlternatives: true,
+			travelMode: mode,
+		}
+		directionsService.route(request, function(result, status) {
+	    	if (status == 'OK') {
+	      		directionsDisplay.setDirections(result);
+	      		marker.setMap(null);
+	    	}
+	  	});
+	}
+
+	//street view
+
+	$("#yellowMap").click(function(){
+		if($("#yellowMap").attr("src") == "http://cs-server.usc.edu:45678/hw/hw8/images/Pegman.png"){
+			$("#yellowMap").attr("src","http://cs-server.usc.edu:45678/hw/hw8/images/Map.png");
+			  	panorama = new google.maps.StreetViewPanorama(
+			      	document.getElementById('realMap'), {
+			        position: {lat:eLat, lng:eLon},
+			        pov: {
+			          heading: 34,
+			          pitch: 10
+			        }
+		      	});
+		 		map.setStreetView(panorama);
+		}
+		else{
+			$("#yellowMap").attr("src","http://cs-server.usc.edu:45678/hw/hw8/images/Pegman.png");
+			panorama.setVisible(false);
+		}
+	})
+
+
+	//results btn
+	$("#resultsBtn").click(function(){
+		$("#favoritesBtn").removeClass("btn-primary");
+		$("#favoritesBtn").addClass("btn-light");
+		$("#resultsBtn").removeClass("btn-light");
+		$("#resultsBtn").addClass("btn-primary");
+
+		$("#favoritesContainer").css("display","none");
+		$("#content").css("display","block");
+
+	})
+
+
+	//favorites btn
+	$("#favoritesBtn").click(function(){
+		$("#resultsBtn").removeClass("btn-primary");
+		$("#resultsBtn").addClass("btn-light");
+		$("#favoritesBtn").removeClass("btn-light");
+		$("#favoritesBtn").addClass("btn-primary");
+
+		$("#favoritesContainer").css("display","block");
+		$("#content").css("display","none");
+		setFavorites();
+	})
+
+	function setFavorites(){
+
+		var favorContent = "<div class='d-flex justify-content-end'><button id='favorDetails' class='btn btn-outline-dark' disabled ng-click=\"containTrue()\">Details<span class='fas fa-angle-right'></span></button></div>";
+		var totalPage = Math.ceil(localStorage.length/20);
+
+
+		if(localStorage.length != 0){
+			for(var i = 0 ; i < totalPage; i++){
+				if(i == 0){
+					favorContent += "<div class='table-responsive' id='favorTable1'><table class='table contentTable'><thead><tr><th>#</th><th>Category</th><th>Name</th><th>Address</th><th>Favorite</th><th>Details</th></thead><tbody>";
+					var number = 1;
+					for(var j = 0; j < 20 && j< localStorage.length; j++, number ++){
+						favorContent += "<tr  class='" + localStorage.key(i*20 + j) + "'><th scope='row'>" + number + "</th>";
+						var obj = localStorage.getItem(localStorage.key(i*20 + j))
+						obj = JSON.parse(obj);
+						favorContent += "<td>" + obj.category + "</td>";
+						favorContent += "<td class='text-nowrap'>" + obj.name + "</td>";
+						favorContent += "<td class='text-nowrap'>" + obj.address + "</td>";
+						favorContent += "<td><button type='button' class='tableFBtn btn btn-outline-dark'><span class='fas fa-trash-alt'></span></button></td>";
+						favorContent += "<td><button type='button' class='tableDBtn btn btn-outline-dark' ng-click=\"containTrue()\"><span class='fas fa-angle-right'></span></button></td></tr>";
+					}
+					favorContent += "</tbody></table>";
+					if(totalPage > 1){
+						favorContent += "<div class='d-flex justify-content-center'><button type='button' class='btn btn-outline-dark nextPage'>Next</button></div></div>";
+					}
+
+				}
+				else if(i == (totalPage-1)){
+					favorContent += "<div class='table-responsive' style='display:none' id='favorTable" + totalPage +"'><table class='table contentTable'><thead><tr><th>#</th><th>Category</th><th>Name</th><th>Address</th><th>Favorite</th><th>Details</th></thead><tbody>";
+					var number = 1;
+					for(var j = 0; j < 20 && j < (localStorage.length - i*20); j++, number ++){
+						favorContent += "<tr  class='" + localStorage.key(i*20 + j) + "'><th scope='row'>" + number + "</th>";
+						var obj = localStorage.getItem(localStorage.key(i*20 + j))
+						obj = JSON.parse(obj);
+						favorContent += "<td>" + obj.category + "</td>";
+						favorContent += "<td class='text-nowrap'>" + obj.name + "</td>";
+						favorContent += "<td class='text-nowrap'>" + obj.address + "</td>";
+						favorContent += "<td><button type='button' class='tableFBtn btn btn-outline-dark'><span class='fas fa-trash-alt'></span></button></td>";
+						favorContent += "<td><button type='button' class='tableDBtn btn btn-outline-dark' ng-click=\"containTrue()\"><span class='fas fa-angle-right'></span></button></td></tr>";
+					}
+					favorContent += "</tbody></table>";
+					favorContent += "<div class='d-flex justify-content-center'><button type='button' class='btn btn-outline-dark previousPage'>Previous</button></div></div>";
+				}
+				else{
+					var pageNumber = i + 1;
+					favorContent += "<div class='table-responsive' style='display:none' id='favorTable" + pageNumber +"'><table class='table contentTable'><thead><tr><th>#</th><th>Category</th><th>Name</th><th>Address</th><th>Favorite</th><th>Details</th></thead><tbody>";
+					var number = 1;
+					for(var j = 0; j < 20; j++, number ++){
+						favorContent += "<tr  class='" + localStorage.key(i*20 + j) + "'><th scope='row'>" + number + "</th>";
+						var obj = localStorage.getItem(localStorage.key(i*20 + j))
+						obj = JSON.parse(obj);
+						favorContent += "<td>" + obj.category + "</td>";
+						favorContent += "<td class='text-nowrap'>" + obj.name + "</td>";
+						favorContent += "<td class='text-nowrap'>" + obj.address + "</td>";
+						favorContent += "<td><button type='button' class='tableFBtn btn btn-outline-dark'><span class='fas fa-trash-alt'></span></button></td>";
+						favorContent += "<td><button type='button' class='tableDBtn btn btn-outline-dark' ng-click=\"containTrue()\"><span class='fas fa-angle-right'></span></button></td></tr>";
+					}
+					favorContent += "</tbody></table>";
+					favorContent += "<div class='d-flex justify-content-center'><button type='button' class='btn btn-outline-dark previousPage'>Previous</button><button type='button' class='btn btn-outline-dark nextPage'>Next</button></div></div>";
+				}
+			}
+
+			var scope = angular.element('#favoritesContainer').scope();
+
+			scope.refreshF(favorContent);
+			scope.$apply();
+
+			//$("#favoritesContainer").html(favorContent);
+
+			$('div#favoritesContainer .tableDBtn.btn.btn-outline-dark').on('click',function(){
+				if(!currentFavoriteID){
+					var place_id = $(this).parents("tr").attr("class");
+					currentFavoriteID = place_id;
+					$(this).parents("tr").addClass("table-warning");
+					$('#favorDetails').removeAttr("disabled");
+
+					localID = place_id;
+					localCategory = $(this).parents("tr").children("td").eq(0).html();
+					localName = $(this).parents("tr").children("td").eq(1).html();
+					localAddress = $(this).parents("tr").children("td").eq(2).html();
+
+					searchDetail(place_id);
+					$('#favorDetails').click(function(){
+						searchDetail(place_id);
+					})
+				}
+				else{
+					$("." + currentFavoriteID).removeClass("table-warning");
+					var place_id = $(this).parents("tr").attr("class");
+					currentFavoriteID = place_id;
+					$(this).parents("tr").addClass("table-warning");
+
+					localID = place_id;
+					localCategory = $(this).parents("tr").children("td").eq(0).html();
+					localName = $(this).parents("tr").children("td").eq(1).html();
+					localAddress = $(this).parents("tr").children("td").eq(2).html();
+
+					searchDetail(place_id);
+					$('#favorDetails').click(function(){
+						searchDetail(place_id);
+					})
+				}
+			});
+
+			//add localStorage delete function
+			$('div#favoritesContainer .tableFBtn.btn.btn-outline-dark').on('click', function(){
+				var keyOfThis = $(this).parents("tr").attr("class");						
+				localStorage.removeItem(keyOfThis);
+				setFavorites();
+			})
+
+			$(".previousPage").click(function(){
+				$(this).parent().parent().css("display", "none");
+				var id = $(this).parent().parent().attr("id");
+				id = "favorTable" + (parseInt(id.substr(-1,1))-1);
+				$("#" + id).css("display", "block");
+			})
+
+			$(".nextPage").click(function(){
+				$(this).parent().parent().css("display", "none");
+				var id = $(this).parent().parent().attr("id");
+				id = "favorTable" + (parseInt(id.substr(-1,1))+1);
+				$("#" + id).css("display", "block");
+			})
+
+		}
+		else{
+			favorContent = "<div class='noRecords alert alert-warning'>No records.</div>";
+			$("#favoritesContainer").html(favorContent);
+		}
+
+	}
+
+
+
+	//local storage
+	$("#list").click(function(){
+
+		if(localStorage.getItem(localID)){
+			var buttonHTML = '<span class="fas fa-star yellow-star"></span>';
+			$("#" + localID).children("td").eq(3).find("button").html(buttonHTML);
+			$("#" + localID).children("td").eq(3).find("button").removeClass('not-click');
+		}
+		else{
+			var buttonHTML = '<span class="far fa-star"></span>';
+			$("#" + localID).children("td").eq(3).find("button").html(buttonHTML);
+			$("#" + localID).children("td").eq(3).find("button").addClass('not-click');
+		}
+		if($("#favorThis").hasClass("not-click")){
+			setFavorites();
+		}
+	})
+
+	$("#favorThis").click(function(){
+			if($(this).hasClass("not-click")){
+				var buttonHTML = '<span class="fas fa-star yellow-star"></span>';
+				$(this).html(buttonHTML);
+				$(this).removeClass('not-click');
+
+				var storObj = {};
+
+				storObj.category = localCategory;
+				storObj.name = localName;
+				storObj.address = localAddress;
+				localStorage.setItem(localID, JSON.stringify(storObj));
+			}
+			else{
+				var buttonHTML = '<span class="far fa-star"></span>';
+				$(this).html(buttonHTML);
+				$(this).addClass('not-click');
+
+				localStorage.removeItem(localID);
+			}
+		})
+</script>
+<script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

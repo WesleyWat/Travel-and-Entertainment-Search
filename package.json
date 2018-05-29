@@ -1,0 +1,25 @@
+{
+  "name": "my-app",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@agm/core": "^1.0.0-beta.2",
+    "angular": "^1.6.9",
+    "angular-animate": "^1.6.9",
+    "angular-google-maps": "^2.4.1",
+    "angular-simple-logger": "^0.1.7",
+    "async": "^2.6.0",
+    "aws-sdk": "latest",
+    "body-parser": "latest",
+    "ejs": "latest",
+    "express": "latest",
+    "loadash": "^1.0.0",
+    "moment": "^2.22.0",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2",
+    "yelp-fusion": "^2.0.3"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
