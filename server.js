@@ -10,9 +10,6 @@ app.get('/', function (req, res) {
     res.sendFile( __dirname + "/" + "test.html" );
 });
 
-app.get('/index.htm', function (req, res) {
-    res.sendFile( __dirname + "/" + "index.htm" );
-});
 
 app.get('/test.html', function (req, res){
     res.sendFile( __dirname + "/" + "test.html");
